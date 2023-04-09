@@ -32,6 +32,8 @@ Options:
 
 -i, --interactive: Start an interactive chat session with the AI assistant.
 
+-p, --prompt: The prompt to use for the AI assistant. Default is "Assistant is a large language model trained by OpenAI.".
+
 If you use the -i or --interactive option, the tool will start an interactive chat session. You can type messages to the AI assistant and it will respond to you.
 
 ## Examples
@@ -53,6 +55,10 @@ or with a message
 ![example1](https://user-images.githubusercontent.com/15100664/230759459-719f9063-ba49-4b24-8049-1588c2419eb6.png)
 
 ![example2](https://user-images.githubusercontent.com/15100664/230759456-6932fae1-99de-42ad-b2ad-de565a92ae97.png)
+
+![2](https://user-images.githubusercontent.com/15100664/230782730-d4ce8746-f335-4199-81b2-74d37271fa4a.png)
+
+![1](https://user-images.githubusercontent.com/15100664/230782732-3939f69b-d0ec-43fe-9ddf-7377c51b2944.png)
 
 ## License
 
