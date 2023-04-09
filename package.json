@@ -1,0 +1,26 @@
+{
+  "name": "@cyyyu/ai",
+  "version": "1.0.0",
+  "description": "A command line program designed to interact with Azure OpenAI API.",
+  "main": "index.js",
+  "bin": {
+    "ai": "./bin/ai.mjs"
+  },
+  "keywords": [
+    "ai",
+    "openai",
+    "azure",
+    "gpt",
+    "chatgpt",
+    "api",
+    "command-line",
+    "cli"
+  ],
+  "author": "Chuang Yu <cyu9960@gmail.com> (https://github.com/cyyyu)",
+  "license": "MIT",
+  "dependencies": {
+    "command-line-args": "^5.2.1",
+    "node-fetch": "^3.3.1"
+  },
+  "devDependencies": {}
+}
