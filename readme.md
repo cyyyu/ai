@@ -52,9 +52,11 @@ or with a message
 
 `ai -i "Can you provide an example of a puzzle with a six-digit code as the solution?"`
 
-![example1](https://user-images.githubusercontent.com/15100664/230759459-719f9063-ba49-4b24-8049-1588c2419eb6.png)
+### Screenshots
 
-![example2](https://user-images.githubusercontent.com/15100664/230759456-6932fae1-99de-42ad-b2ad-de565a92ae97.png)
+![6](https://user-images.githubusercontent.com/15100664/230783200-00cbb043-99f2-4a51-ab97-0d954cf097b2.png)
+
+![7](https://user-images.githubusercontent.com/15100664/230783331-3537cacd-0e77-475c-b22f-386543c433fb.png)
 
 ![2](https://user-images.githubusercontent.com/15100664/230782730-d4ce8746-f335-4199-81b2-74d37271fa4a.png)
 
