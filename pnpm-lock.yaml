@@ -1,10 +1,12 @@
 lockfileVersion: 5.4
 
 specifiers:
+  chalk: ^5.2.0
   command-line-args: ^5.2.1
   node-fetch: ^3.3.1
 
 dependencies:
+  chalk: 5.2.0
   command-line-args: 5.2.1
   node-fetch: 3.3.1
 
@@ -13,6 +15,11 @@ packages:
   /array-back/3.1.0:
     resolution: {integrity: sha512-TkuxA4UCOvxuDK6NZYXCalszEzj+TLszyASooky+i742l9TqsOdYCMJJupxRic61hwquNtppB3hgcuq9SVSH1Q==}
     engines: {node: '>=6'}
+    dev: false
+
+  /chalk/5.2.0:
+    resolution: {integrity: sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
     dev: false
 
   /command-line-args/5.2.1:

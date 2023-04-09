@@ -3,7 +3,10 @@
 import commandLineArgs from "command-line-args";
 import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import chalk from "chalk";
 import { OpenAIChat } from "../lib/OpenAIChat.mjs";
+
+const log = console.log;
 
 async function main() {
   const optionDefinitions = [
@@ -14,11 +17,11 @@ async function main() {
   const options = commandLineArgs(optionDefinitions);
 
   if (options.help || (!options.message && !options.interactive)) {
-    console.log("Usage: ai [options] [message]");
-    console.log("Options:");
-    console.log("  -h, --help     Show this help message.");
-    console.log("  -m, --message  Message to send to the assistant.");
-    console.log("  -i, --interactive  Start an interactive chat session.");
+    log("Usage: ai [options] [message]");
+    log("Options:");
+    log("  -h, --help     Show this help message.");
+    log("  -m, --message  Message to send to the assistant.");
+    log("  -i, --interactive  Start an interactive chat session.");
     return;
   }
 
@@ -28,8 +31,7 @@ async function main() {
   if (options.interactive) {
     const rl = readline.createInterface({ input, output });
     rl.on("close", () => {
-      // Print the assistant's message and color it green
-      console.log("\n\x1b[32m%s\x1b[0m", `Assistant: Bye!`);
+      log(chalk.green`\nBye!`);
       process.exit(0);
     });
 
@@ -37,23 +39,21 @@ async function main() {
       assistantMessage;
 
     if (!userMessage) {
-      userMessage = await rl.question("You: ");
+      userMessage = await rl.question(">> ");
     }
 
     assistantMessage = await chat.startNewChat(userMessage);
 
     while (true) {
-      // Print the assistant's message and color it green
-      console.log("\x1b[32m%s\x1b[0m", `Assistant: ${assistantMessage}`);
-      // Read another message from the user using
-      userMessage = await rl.question("You: ");
+      log(chalk.green(assistantMessage));
+      // Read another message
+      userMessage = await rl.question(">> ");
       assistantMessage = await chat.continueChat(userMessage);
     }
   } else {
     // Non-interactive mode
     const assistantMessage = await chat.startNewChat(options.message);
-    // Print the assistant's message and color it green
-    console.log("\x1b[32m%s\x1b[0m", `Assistant: ${assistantMessage}`);
+    log(chalk.green(assistantMessage));
   }
 }
 
