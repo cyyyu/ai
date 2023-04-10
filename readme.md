@@ -42,25 +42,41 @@ Here are some examples of how to use the tool:
 
 ### Send a message to the AI assistant
 
-`ai "Can you provide an example of a puzzle with a six-digit code as the solution?"`
+`ai "How to find the biggest folder in a bash shell?"`
+
+![9](https://user-images.githubusercontent.com/15100664/230932415-15eae30a-3554-4115-8034-3d17fd3bf9e0.png)
 
 ### Start an interactive chat session
 
-`ai -i`
+`ai -i` or with a message `ai -i "Why is the ocean blue?"`
 
-or with a message
+![10](https://user-images.githubusercontent.com/15100664/230932408-dfd9c344-501d-4292-a4a9-22b5b2030978.png)
 
-`ai -i "Can you provide an example of a puzzle with a six-digit code as the solution?"`
+### Use a different prompt
 
-### Screenshots
+Act as a smart commit message generator:
 
-![6](https://user-images.githubusercontent.com/15100664/230783200-00cbb043-99f2-4a51-ab97-0d954cf097b2.png)
+```bash
+alias aicommit="ai -p 'I want you to act as a commit message generator. I will provide you with information about the task and the prefix for the task code, and I would like you to generate an appropriate commit message using the conventional commit format. Do not write any explanations or other words, just reply with the commit message.'"
+```
 
-![7](https://user-images.githubusercontent.com/15100664/230783331-3537cacd-0e77-475c-b22f-386543c433fb.png)
+![15](https://user-images.githubusercontent.com/15100664/230936714-982d8aaf-b4ee-4ec2-835d-c2412ad6008c.png)
 
-![2](https://user-images.githubusercontent.com/15100664/230782730-d4ce8746-f335-4199-81b2-74d37271fa4a.png)
+Act as a fancy title generator:
 
-![1](https://user-images.githubusercontent.com/15100664/230782732-3939f69b-d0ec-43fe-9ddf-7377c51b2944.png)
+```bash
+alias ai-fancy-title-generator="ai -p 'I want you to act as a fancy title generator. I will type keywords via comma and you will reply with fancy titles.'"
+```
+
+![16](https://user-images.githubusercontent.com/15100664/230937129-8ae7f519-8915-42f9-b5c4-1728bd0d1e02.png)
+
+Act as an english translator:
+
+```bash
+alias ai-english-translator="ai -p 'I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations.'"
+```
+
+![13](https://user-images.githubusercontent.com/15100664/230936735-10a0f26d-6c3b-4b84-a2ab-47454695d0a8.png)
 
 ## License
 
