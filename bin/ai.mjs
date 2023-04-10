@@ -4,22 +4,27 @@ import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import chalk from "chalk";
 import { OpenAIChat } from "../lib/OpenAIChat.mjs";
-import { parseArgs } from "../lib/parseArgs.mjs";
+import { parseArgs, printHelp } from "../lib/parseArgs.mjs";
+import { readFromPipe } from "../lib/readFromPipe.mjs";
 
 const log = console.log;
 
 async function main() {
   const args = parseArgs();
 
-  if (args.help || (!args.message && !args.interactive)) {
-    log("Usage: ai [options] [message]");
-    log("Options:");
-    log("  -h, --help         Show this help message.");
-    log("  -m, --message      Message to send to the assistant.");
-    log("  -i, --interactive  Start an interactive chat session.");
-    log("  -p, --prompt       Prompt to use for the assistant.");
+  if (args.help) {
+    printHelp();
     return;
   }
+
+  if (!args.message) {
+    args.message = await readFromPipe();
+    if (!args.message && !args.interactive) {
+      printHelp();
+      return;
+    }
+  }
+
   const chat = new OpenAIChat(args.prompt);
 
   // Interactive mode
