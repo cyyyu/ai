@@ -1,23 +1,17 @@
 #!/usr/bin/env node
 
-import commandLineArgs from "command-line-args";
 import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import chalk from "chalk";
 import { OpenAIChat } from "../lib/OpenAIChat.mjs";
+import { parseArgs } from "../lib/parseArgs.mjs";
 
 const log = console.log;
 
 async function main() {
-  const optionDefinitions = [
-    { name: "help", alias: "h", type: Boolean },
-    { name: "message", alias: "m", type: String, defaultOption: true },
-    { name: "interactive", alias: "i", type: Boolean },
-    { name: "prompt", alias: "p", type: String },
-  ];
-  const options = commandLineArgs(optionDefinitions);
+  const args = parseArgs();
 
-  if (options.help || (!options.message && !options.interactive)) {
+  if (args.help || (!args.message && !args.interactive)) {
     log("Usage: ai [options] [message]");
     log("Options:");
     log("  -h, --help         Show this help message.");
@@ -26,18 +20,17 @@ async function main() {
     log("  -p, --prompt       Prompt to use for the assistant.");
     return;
   }
-
-  const chat = new OpenAIChat(options.prompt);
+  const chat = new OpenAIChat(args.prompt);
 
   // Interactive mode
-  if (options.interactive) {
+  if (args.interactive) {
     const rl = readline.createInterface({ input, output });
     rl.on("close", () => {
       log(chalk.green`\nBye!`);
       process.exit(0);
     });
 
-    let userMessage = options.message,
+    let userMessage = args.message,
       assistantMessage;
 
     if (!userMessage) {
@@ -54,7 +47,7 @@ async function main() {
     }
   } else {
     // Non-interactive mode
-    const assistantMessage = await chat.startNewChat(options.message);
+    const assistantMessage = await chat.startNewChat(args.message);
     log(chalk.green(assistantMessage));
   }
 }
