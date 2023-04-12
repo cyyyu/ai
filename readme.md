@@ -1,14 +1,14 @@
-# AI
+# 🤖 AI
 
 A command-line tool for interacting with Azure OpenAI chat completion api.
 
-## Installation
+## 📥 Installation
 
 `$ npm install -g @cyyyu/ai`
 
-## Usage
+## 🚀 Usage
 
-Create a resource and deploy a model using Azure OpenAI if you haven't done so already. You can follow [this doc](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource?pivots=web-portal). 
+Create a resource and deploy a model using Azure OpenAI if you haven't done so already. You can follow [this doc](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource?pivots=web-portal).
 
 Once you have a resource and a model deployed, retrieve the ENDPOINT and API_KEY from Azure portal. Follow [this instruction](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=bash&pivots=rest-api#retrieve-key-and-endpoint).
 
@@ -36,7 +36,7 @@ Options:
 
 If you use the -i or --interactive option, the tool will start an interactive chat session. You can type messages to the AI assistant and it will respond to you.
 
-## Examples
+## 💡 Examples
 
 Here are some examples of how to use the tool:
 
@@ -78,6 +78,6 @@ alias ai-english-translator="ai -p 'I want you to act as an English translator, 
 
 ![13](https://user-images.githubusercontent.com/15100664/230936735-10a0f26d-6c3b-4b84-a2ab-47454695d0a8.png)
 
-## License
+## 📝 License
 
 MIT
