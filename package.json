@@ -6,6 +6,9 @@
   "bin": {
     "ai": "./bin/ai.mjs"
   },
+  "scripts": {
+    "test": "ava"
+  },
   "keywords": [
     "ai",
     "openai",
@@ -26,5 +29,8 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "ava": "^5.2.0"
   }
 }
