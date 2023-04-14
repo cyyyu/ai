@@ -39,7 +39,7 @@ async function main() {
       assistantMessage;
 
     if (!userMessage) {
-      userMessage = await rl.question(">> ");
+      userMessage = await rl.question("> ");
     }
 
     assistantMessage = await chat.startNewChat(userMessage);
@@ -47,7 +47,7 @@ async function main() {
     while (true) {
       log(chalk.green(assistantMessage));
       // Read another message
-      userMessage = await rl.question(">> ");
+      userMessage = await rl.question("> ");
       assistantMessage = await chat.continueChat(userMessage);
     }
   } else {
