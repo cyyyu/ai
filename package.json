@@ -24,6 +24,8 @@
   "dependencies": {
     "chalk": "^5.2.0",
     "command-line-args": "^5.2.1",
+    "marked": "^4.3.0",
+    "marked-terminal": "^5.1.1",
     "node-fetch": "^3.3.1",
     "ora": "^6.3.0"
   },
