@@ -4,7 +4,7 @@ import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import chalk from "chalk";
 import { OpenAIChat } from "../lib/OpenAIChat.mjs";
-import { parseArgs, printHelp } from "../lib/parseArgs.mjs";
+import { parseArgs, printHelp, printVersion } from "../lib/parseArgs.mjs";
 import { readFromPipe } from "../lib/readFromPipe.mjs";
 
 const log = console.log;
@@ -14,6 +14,11 @@ async function main() {
 
   if (args.help) {
     printHelp();
+    return;
+  }
+
+  if (args.version) {
+    printVersion();
     return;
   }
 
