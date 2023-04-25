@@ -2,6 +2,8 @@
 
 A command-line tool for interacting with Azure OpenAI chat completion api.
 
+<img src="https://user-images.githubusercontent.com/15100664/233401551-6640da41-c331-4dac-a624-feb21de23408.gif" alt="Example GIF" width="600" />
+
 ## 📥 Installation
 
 `$ npm install -g @cyyyu/ai`

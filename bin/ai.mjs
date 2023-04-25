@@ -6,6 +6,12 @@ import chalk from "chalk";
 import { OpenAIChat } from "../lib/OpenAIChat.mjs";
 import { parseArgs, printHelp, printVersion } from "../lib/parseArgs.mjs";
 import { readFromPipe } from "../lib/readFromPipe.mjs";
+import { marked } from "marked";
+import TerminalRenderer from "marked-terminal";
+
+marked.setOptions({
+  renderer: new TerminalRenderer(),
+});
 
 const log = console.log;
 
@@ -36,7 +42,7 @@ async function main() {
   if (args.interactive) {
     const rl = readline.createInterface({ input, output });
     rl.on("close", () => {
-      log(chalk.green`\nBye!`);
+      prettyPrint(`\nBye!`);
       process.exit(0);
     });
 
@@ -50,7 +56,7 @@ async function main() {
     assistantMessage = await chat.startNewChat(userMessage);
 
     while (true) {
-      log(chalk.green(assistantMessage));
+      prettyPrint(assistantMessage);
       // Read another message
       userMessage = await rl.question("> ");
       assistantMessage = await chat.continueChat(userMessage);
@@ -58,8 +64,12 @@ async function main() {
   } else {
     // Non-interactive mode
     const assistantMessage = await chat.startNewChat(args.message);
-    log(chalk.green(assistantMessage));
+    prettyPrint(assistantMessage);
   }
+}
+
+function prettyPrint(output) {
+  log(marked(output));
 }
 
 main();
