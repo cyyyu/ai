@@ -56,17 +56,16 @@ async function main() {
     assistantMessage;
 
   if (!userMessage) {
-    userMessage = await rl.question(chalk.bold("> "));
+    userMessage = await rl.question(chalk.bold("You:\n> "));
   }
 
   assistantMessage = await chat.startNewChat(userMessage);
 
   while (true) {
     log(chalk.bold("Assistant:"));
-    log(marked(assistantMessage).trim());
-    log(chalk.bold("\nYou:"));
+    log(marked(assistantMessage).trim() + "\n");
     // Read another message
-    userMessage = await rl.question(chalk.bold("> "));
+    userMessage = await rl.question(chalk.bold("You:\n> "));
     assistantMessage = await chat.continueChat(userMessage);
   }
 }
