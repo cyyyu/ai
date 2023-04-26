@@ -42,6 +42,18 @@ async function main() {
     // Non-interactive mode
     const assistantMessage = await chat.startNewChat(args.message);
     log(marked(assistantMessage).trim());
+    if (args.usage) {
+      const usage = chat.getUsage();
+      log(
+        chalk.bold(
+          `\n${chalk.underline("Prompt tokens")}: ${
+            usage.prompt_tokens
+          }\n${chalk.underline("Completion tokens")}: ${
+            usage.completion_tokens
+          }\n${chalk.underline("Total tokens")}: ${usage.total_tokens}`
+        )
+      );
+    }
     return;
   }
 
@@ -62,7 +74,17 @@ async function main() {
   assistantMessage = await chat.startNewChat(userMessage);
 
   while (true) {
-    log(chalk.bold("Assistant:"));
+    // Usage info in one line
+    // With the color slightly dimmed
+    let usageInfo = "";
+    if (args.usage) {
+      const usage = chat.getUsage();
+      usageInfo = chalk.dim(
+        `(Prompt tokens: ${usage.prompt_tokens}, Completion tokens: ${usage.completion_tokens}, Total tokens: ${usage.total_tokens})`
+      );
+    }
+
+    log(chalk.bold("Assistant: ") + usageInfo);
     log(marked(assistantMessage).trim() + "\n");
     // Read another message
     userMessage = await rl.question(chalk.bold("You:\n> "));
