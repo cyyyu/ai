@@ -18,7 +18,6 @@ test("api key and url are set correctly", (t) => {
 });
 
 test("initial prompt is set correctly", (t) => {
-  console.log();
   const chat = new OpenAIChat("hello");
   t.is(chat._initialContext.content, "hello");
 });
