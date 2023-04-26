@@ -24,7 +24,7 @@ async function main() {
   }
 
   if (args.version) {
-    printVersion();
+    await printVersion();
     return;
   }
 
@@ -38,38 +38,37 @@ async function main() {
 
   const chat = new OpenAIChat(args.prompt);
 
-  // Interactive mode
-  if (args.interactive) {
-    const rl = readline.createInterface({ input, output });
-    rl.on("close", () => {
-      prettyPrint(`\nBye!`);
-      process.exit(0);
-    });
-
-    let userMessage = args.message,
-      assistantMessage;
-
-    if (!userMessage) {
-      userMessage = await rl.question("> ");
-    }
-
-    assistantMessage = await chat.startNewChat(userMessage);
-
-    while (true) {
-      prettyPrint(assistantMessage);
-      // Read another message
-      userMessage = await rl.question("> ");
-      assistantMessage = await chat.continueChat(userMessage);
-    }
-  } else {
+  if (!args.interactive) {
     // Non-interactive mode
     const assistantMessage = await chat.startNewChat(args.message);
-    prettyPrint(assistantMessage);
+    log(marked(assistantMessage).trim());
+    return;
   }
-}
 
-function prettyPrint(output) {
-  log(marked(output));
+  // Interactive mode
+  const rl = readline.createInterface({ input, output });
+  rl.on("close", () => {
+    log(`\nBye!`);
+    process.exit(0);
+  });
+
+  let userMessage = args.message,
+    assistantMessage;
+
+  if (!userMessage) {
+    userMessage = await rl.question(chalk.bold("> "));
+  }
+
+  assistantMessage = await chat.startNewChat(userMessage);
+
+  while (true) {
+    log(chalk.bold("Assistant:"));
+    log(marked(assistantMessage).trim());
+    log(chalk.bold("\nYou:"));
+    // Read another message
+    userMessage = await rl.question(chalk.bold("> "));
+    assistantMessage = await chat.continueChat(userMessage);
+  }
 }
 
 main();
