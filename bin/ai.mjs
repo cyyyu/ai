@@ -48,7 +48,7 @@ async function main() {
   // Interactive mode
   const rl = readline.createInterface({ input, output });
   rl.on("close", () => {
-    log(`\nBye!`);
+    log(chalk.bold("\nGoodbye!"));
     process.exit(0);
   });
 
