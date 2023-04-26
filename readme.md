@@ -36,6 +36,8 @@ Options:
 
 -p, --prompt: The prompt to use for the AI assistant. Default is "Assistant is a large language model trained by OpenAI.".
 
+-u, --usage: Show usage statistics.
+
 -v, --version: Display the version of the tool.
 
 If you use the -i or --interactive option, the tool will start an interactive chat session. You can type messages to the AI assistant and it will respond to you.
