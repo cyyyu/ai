@@ -8,6 +8,7 @@ import { parseArgs, printHelp, printVersion } from "../lib/parseArgs.mjs";
 import { readFromPipe } from "../lib/readFromPipe.mjs";
 import { marked } from "marked";
 import TerminalRenderer from "marked-terminal";
+import { parseUserMessage } from "../lib/parseUserMessage.mjs";
 
 marked.setOptions({
   renderer: new TerminalRenderer(),
@@ -68,7 +69,9 @@ async function main() {
     assistantMessage;
 
   if (!userMessage) {
-    userMessage = await rl.question(chalk.bold("You:\n> "));
+    userMessage = await rl.question(
+      chalk.bold(`You: ${chalk.dim(`[0]`)}\n> `)
+    );
   }
 
   assistantMessage = await chat.startNewChat(userMessage);
@@ -86,9 +89,21 @@ async function main() {
 
     log(chalk.bold("Assistant: ") + usageInfo);
     log(marked(assistantMessage).trim() + "\n");
+
     // Read another message
-    userMessage = await rl.question(chalk.bold("You:\n> "));
-    assistantMessage = await chat.continueChat(userMessage);
+    // Show prompt in this format: "You: [idx]"
+    // With idx is dimmed
+    const idx = chat.getNumOfUserMessages();
+    userMessage = await rl.question(
+      chalk.bold(`You: ${chalk.dim(`[${idx}]`)}\n> `)
+    );
+
+    const userIntent = parseUserMessage(userMessage);
+
+    assistantMessage = await chat.continueChat(
+      userIntent.message,
+      userIntent.intent === "edit" ? userIntent.index : undefined
+    );
   }
 }
 
