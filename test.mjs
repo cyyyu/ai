@@ -21,3 +21,9 @@ test("initial prompt is set correctly", (t) => {
   const chat = new OpenAIChat("hello");
   t.is(chat._initialContext.content, "hello");
 });
+
+test("response should match", async (t) => {
+  const chat = new OpenAIChat("hello");
+  const res = await chat.startNewChat("hi");
+  t.is(res, "Test response");
+});
