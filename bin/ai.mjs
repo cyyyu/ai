@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import * as readline from "node:readline/promises";
-import { stdin as input, stdout as output } from "node:process";
 import chalk from "chalk";
 import { OpenAIChat } from "../lib/OpenAIChat.mjs";
 import { parseArgs, printHelp, printVersion } from "../lib/parseArgs.mjs";
@@ -9,7 +7,7 @@ import { readFromPipe } from "../lib/readFromPipe.mjs";
 import { marked } from "marked";
 import TerminalRenderer from "marked-terminal";
 import { parseUserMessage } from "../lib/parseUserMessage.mjs";
-import { getCache, getLinesBelowMessage } from "../lib/terminal.mjs";
+import { Term } from "../lib/terminal.mjs";
 
 marked.setOptions({
   renderer: new TerminalRenderer(),
@@ -48,8 +46,10 @@ async function main() {
       const usage = chat.getUsage();
       log(
         chalk.bold(
-          `\n${chalk.underline("Prompt tokens")}: ${usage.prompt_tokens
-          }\n${chalk.underline("Completion tokens")}: ${usage.completion_tokens
+          `\n${chalk.underline("Prompt tokens")}: ${
+            usage.prompt_tokens
+          }\n${chalk.underline("Completion tokens")}: ${
+            usage.completion_tokens
           }\n${chalk.underline("Total tokens")}: ${usage.total_tokens}`
         )
       );
@@ -58,21 +58,10 @@ async function main() {
   }
 
   // Interactive mode
-  const rl = readline.createInterface({ input, output });
-  const term = new readline.Readline(output, { autoCommit: true });
-  rl.on("close", () => {
-    log(chalk.bold("\nGoodbye!"));
-    process.exit(0);
-  });
+  const term = new Term();
 
-  let userMessage = args.message,
-    assistantMessage;
-
-  if (!userMessage) {
-    userMessage = await rl.question(chalk.bold(`You: ${chalk.dim(`[0]`)}\n> `));
-  }
-
-  assistantMessage = await chat.startNewChat(userMessage);
+  let userMessage = args.message || (await term.prompt());
+  let assistantMessage = await chat.startNewChat(userMessage);
 
   while (true) {
     // Usage info in one line
@@ -85,26 +74,22 @@ async function main() {
       );
     }
 
-    log(chalk.bold("Assistant: ") + usageInfo);
-    log(marked(assistantMessage).trim() + "\n");
+    term.answer(assistantMessage, usageInfo);
 
     // Read another message
     // Show prompt in this format: "You: [idx]"
     // With idx is dimmed
     const idx = chat.getNumOfUserMessages();
-    userMessage = await rl.question(
-      chalk.bold(`You: ${chalk.dim(`[${idx}]`)}\n> `)
-    );
+    userMessage = await term.prompt(idx);
 
     const userIntent = parseUserMessage(userMessage);
-
     if (userIntent.intent === "edit") {
       // Clear the screen under the message
-      const linesBelowMessage = getLinesBelowMessage(
-        chat.getNumOfUserMessages()
-      );
-      //term.moveCursor(0, -linesBelowMessage).clearScreenDown();
-      log(chalk.bold(`> `) + userIntent.message);
+      //const linesBelowMessage = getLinesBelowMessage(
+      //chat.getNumOfUserMessages()
+      //);
+      //console.log(chalk.red(linesBelowMessage));
+      //log(chalk.bold(`> `) + userIntent.message);
     }
 
     assistantMessage = await chat.continueChat(
