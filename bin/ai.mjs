@@ -9,6 +9,7 @@ import { readFromPipe } from "../lib/readFromPipe.mjs";
 import { marked } from "marked";
 import TerminalRenderer from "marked-terminal";
 import { parseUserMessage } from "../lib/parseUserMessage.mjs";
+import { getCache, getLinesBelowMessage } from "../lib/terminal.mjs";
 
 marked.setOptions({
   renderer: new TerminalRenderer(),
@@ -47,10 +48,8 @@ async function main() {
       const usage = chat.getUsage();
       log(
         chalk.bold(
-          `\n${chalk.underline("Prompt tokens")}: ${
-            usage.prompt_tokens
-          }\n${chalk.underline("Completion tokens")}: ${
-            usage.completion_tokens
+          `\n${chalk.underline("Prompt tokens")}: ${usage.prompt_tokens
+          }\n${chalk.underline("Completion tokens")}: ${usage.completion_tokens
           }\n${chalk.underline("Total tokens")}: ${usage.total_tokens}`
         )
       );
@@ -60,6 +59,7 @@ async function main() {
 
   // Interactive mode
   const rl = readline.createInterface({ input, output });
+  const term = new readline.Readline(output, { autoCommit: true });
   rl.on("close", () => {
     log(chalk.bold("\nGoodbye!"));
     process.exit(0);
@@ -69,9 +69,7 @@ async function main() {
     assistantMessage;
 
   if (!userMessage) {
-    userMessage = await rl.question(
-      chalk.bold(`You: ${chalk.dim(`[0]`)}\n> `)
-    );
+    userMessage = await rl.question(chalk.bold(`You: ${chalk.dim(`[0]`)}\n> `));
   }
 
   assistantMessage = await chat.startNewChat(userMessage);
@@ -99,6 +97,15 @@ async function main() {
     );
 
     const userIntent = parseUserMessage(userMessage);
+
+    if (userIntent.intent === "edit") {
+      // Clear the screen under the message
+      const linesBelowMessage = getLinesBelowMessage(
+        chat.getNumOfUserMessages()
+      );
+      //term.moveCursor(0, -linesBelowMessage).clearScreenDown();
+      log(chalk.bold(`> `) + userIntent.message);
+    }
 
     assistantMessage = await chat.continueChat(
       userIntent.message,
