@@ -32,13 +32,13 @@ async function main() {
 
   const chat = new OpenAIChat(args.prompt);
 
+  /* Non-interactive mode */
   if (!args.interactive) {
-    // Non-interactive mode
     chat.startNewChat(args.message);
     const assistantMessage = await chat.ask();
-    log(marked(assistantMessage).trim());
+    log(marked(assistantMessage.content).trim());
     if (args.usage) {
-      const usage = chat.getUsage();
+      const usage = assistantMessage.usage;
       log(
         chalk.bold(
           `\n${chalk.underline("Prompt tokens")}: ${
@@ -52,7 +52,7 @@ async function main() {
     return;
   }
 
-  // Interactive mode
+  /* Interactive mode */
   const term = new Term();
 
   let userMessage = await term.prompt(args.message);
@@ -62,19 +62,13 @@ async function main() {
     term.printConversation(chat.getConversation());
     await chat.ask();
     term.printConversation(chat.getConversation());
-
-    // Read another message
     userMessage = await term.prompt();
 
     const userIntent = parseUserMessage(userMessage);
     if (userIntent.intent === "edit") {
-      // Clear the screen under the message
       chat.editMessage(userIntent.index, userIntent.message);
     } else {
-      chat.continueChat(
-        userIntent.message,
-        userIntent.intent === "edit" ? userIntent.index : undefined
-      );
+      chat.continueChat(userIntent.message);
     }
   }
 }
