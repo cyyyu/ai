@@ -59,9 +59,9 @@ async function main() {
   chat.startNewChat(userMessage);
 
   while (true) {
-    term.printConversation(chat.getConversation());
+    term.printConversation(chat.getConversation(), args.usage);
     await chat.ask();
-    term.printConversation(chat.getConversation());
+    term.printConversation(chat.getConversation(), args.usage);
     userMessage = await term.prompt();
 
     const userIntent = parseUserMessage(userMessage);
