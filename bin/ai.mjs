@@ -18,29 +18,24 @@ const log = console.log;
 async function main() {
   const args = parseArgs();
 
-  if (args.help) {
-    printHelp();
-    return;
-  }
-
   if (args.version) {
     await printVersion();
     return;
   }
 
-  if (!args.message) {
-    args.message = await readFromPipe();
-    if (!args.message && !args.interactive) {
-      printHelp();
-      return;
-    }
+  args.message = args.message || (await readFromPipe());
+
+  if (args.help || (!args.message && !args.interactive)) {
+    printHelp();
+    return;
   }
 
   const chat = new OpenAIChat(args.prompt);
 
   if (!args.interactive) {
     // Non-interactive mode
-    const assistantMessage = await chat.startNewChat(args.message);
+    chat.startNewChat(args.message);
+    const assistantMessage = await chat.ask();
     log(marked(assistantMessage).trim());
     if (args.usage) {
       const usage = chat.getUsage();
@@ -60,42 +55,27 @@ async function main() {
   // Interactive mode
   const term = new Term();
 
-  let userMessage = args.message || (await term.prompt());
-  let assistantMessage = await chat.startNewChat(userMessage);
+  let userMessage = await term.prompt(args.message);
+  chat.startNewChat(userMessage);
 
   while (true) {
-    // Usage info in one line
-    // With the color slightly dimmed
-    let usageInfo = "";
-    if (args.usage) {
-      const usage = chat.getUsage();
-      usageInfo = chalk.dim(
-        `(Prompt tokens: ${usage.prompt_tokens}, Completion tokens: ${usage.completion_tokens}, Total tokens: ${usage.total_tokens})`
-      );
-    }
-
-    term.answer(assistantMessage, usageInfo);
+    term.printConversation(chat.getConversation());
+    await chat.ask();
+    term.printConversation(chat.getConversation());
 
     // Read another message
-    // Show prompt in this format: "You: [idx]"
-    // With idx is dimmed
-    const idx = chat.getNumOfUserMessages();
-    userMessage = await term.prompt(idx);
+    userMessage = await term.prompt();
 
     const userIntent = parseUserMessage(userMessage);
     if (userIntent.intent === "edit") {
       // Clear the screen under the message
-      //const linesBelowMessage = getLinesBelowMessage(
-      //chat.getNumOfUserMessages()
-      //);
-      //console.log(chalk.red(linesBelowMessage));
-      //log(chalk.bold(`> `) + userIntent.message);
+      chat.editMessage(userIntent.index, userIntent.message);
+    } else {
+      chat.continueChat(
+        userIntent.message,
+        userIntent.intent === "edit" ? userIntent.index : undefined
+      );
     }
-
-    assistantMessage = await chat.continueChat(
-      userIntent.message,
-      userIntent.intent === "edit" ? userIntent.index : undefined
-    );
   }
 }
 
