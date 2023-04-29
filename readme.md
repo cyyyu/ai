@@ -2,7 +2,7 @@
 
 A command-line tool for interacting with Azure OpenAI chat completion api.
 
-<img src="https://user-images.githubusercontent.com/15100664/234440512-bcb968d8-e449-48b2-b3d9-d150300b3c57.gif" alt="Example GIF" width="600" />
+<img width="810" alt="Example" src="https://user-images.githubusercontent.com/15100664/235315758-da83afd6-f864-479f-9882-a54f9879d580.png" />
 
 ## 📥 Installation
 
@@ -50,25 +50,27 @@ Here are some examples of how to use the tool:
 
 `ai "How to find the biggest folder in a bash shell?"`
 
-![demo1](https://user-images.githubusercontent.com/15100664/234441412-94cf7872-627d-499e-abda-03897bae3100.png)
+<img width="810" alt="pic1" src="https://user-images.githubusercontent.com/15100664/235315243-87e5f409-ff30-4d9b-a986-2a9e8b98d6df.png" />
 
 ### Start an interactive chat session
 
 `ai -i` or with a message `ai -i "Why is the ocean blue?"`
 
-![demo2](https://user-images.githubusercontent.com/15100664/234441407-757f5cb1-a9e3-4792-80ac-9dce30ce8dcc.png)
+<img width="810" alt="pic2" src="https://user-images.githubusercontent.com/15100664/235315320-c26fa05a-cb77-4dd5-82a5-b6a265616dbf.png" />
 
 ### Use a different prompt
 
-Act as a smart commit message generator:
+1. Act as a smart commit message generator:
 
 ```bash
 alias aicommit="ai -p 'I want you to act as a commit message generator. I will provide you with information about the task and the prefix for the task code, and I would like you to generate an appropriate commit message using the conventional commit format. Do not write any explanations or other words, just reply with the commit message.'"
 ```
 
+You can pipe to it.
+
 ![demo3](https://user-images.githubusercontent.com/15100664/234441674-d2c305e8-1c00-40d6-9de4-e6be4dcefc5e.png)
 
-Act as a fancy title generator:
+2. Act as a fancy title generator:
 
 ```bash
 alias ai-fancy-title-generator="ai -p 'I want you to act as a fancy title generator. I will type keywords via comma and you will reply with fancy titles.'"
@@ -76,13 +78,18 @@ alias ai-fancy-title-generator="ai -p 'I want you to act as a fancy title genera
 
 ![demo4](https://user-images.githubusercontent.com/15100664/234442008-d30d8e6c-eaaa-4115-a71c-9b07886da393.png)
 
-Act as an english translator:
+3. Act as an english translator:
 
 ```bash
 alias ai-english-translator="ai -p 'I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations.'"
 ```
 
 ![demo5](https://user-images.githubusercontent.com/15100664/234441399-6ee81496-7e77-4745-9d60-7b81e5199977.png)
+
+### Explorer more wonderful prompts
+
+* [https://github.com/f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts)
+* [https://github.com/PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)(中文)
 
 ## 📝 License
 
