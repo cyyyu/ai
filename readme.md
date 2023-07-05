@@ -2,7 +2,7 @@
 
 A command-line tool for interacting with Azure OpenAI chat completion api.
 
-<img width="810" alt="Example" src="https://user-images.githubusercontent.com/15100664/235315758-da83afd6-f864-479f-9882-a54f9879d580.png" />
+<img width="842" alt="Example" src="https://github.com/cyyyu/ai/assets/15100664/46db63fc-92f8-4bab-b68e-6f480c264698">
 
 ## 📥 Installation
 
@@ -50,13 +50,13 @@ Here are some examples of how to use the tool:
 
 `ai "How to find the biggest folder in a bash shell?"`
 
-<img width="810" alt="pic1" src="https://user-images.githubusercontent.com/15100664/235315243-87e5f409-ff30-4d9b-a986-2a9e8b98d6df.png" />
+<img width="842" alt="ai 'How to find the biggest folder in a bash shell?'" src="https://github.com/cyyyu/ai/assets/15100664/8aba0397-1e02-4290-a745-f11b1bfa0f67">
 
 ### Start an interactive chat session
 
 `ai -i` or with a message `ai -i "Why is the ocean blue?"`
 
-<img width="810" alt="pic2" src="https://user-images.githubusercontent.com/15100664/235315320-c26fa05a-cb77-4dd5-82a5-b6a265616dbf.png" />
+<img width="842" alt="ai -i 'Why is the ocean blue?'" src="https://github.com/cyyyu/ai/assets/15100664/28fdf657-d7de-4e06-a6f1-24766564b110">
 
 ### Use a different prompt
 
