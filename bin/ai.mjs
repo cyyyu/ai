@@ -101,6 +101,7 @@ async function main() {
     left: 1,
     width: 1,
     height: 1,
+    hidden: true,
   });
 
   blessed.box({
