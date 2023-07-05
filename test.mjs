@@ -24,8 +24,8 @@ test("initial prompt is set correctly", (t) => {
 
 test("response should match", async (t) => {
   const chat = new OpenAIChat("hello");
-  chat.startNewChat("hi");
-  const res = await chat.ask();
+  chat.chat("hi");
+  const res = await chat.sendMessage();
   t.is(res.role, "assistant");
   t.is(res.content, "Test response");
 });
