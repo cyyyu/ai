@@ -79,7 +79,7 @@ async function main() {
     },
     style: {
       border: {
-        fg: "#eeeeee",
+        fg: "gray",
       },
     },
   });
@@ -131,11 +131,11 @@ async function main() {
     const conversation = chat.getConversation();
     box.setContent(
       conversation
-        .map(({ role, content }) => {
+        .map(({ role, content, usage }, idx) => {
           if (role === "user") {
-            return buildUserContent(content).trim();
+            return buildUserContent(content, idx).trim();
           } else if (role === "assistant") {
-            return buildAssistantContent(content).trim();
+            return buildAssistantContent(content, args.usage && usage).trim();
           } else {
             // Error
             return `{red-fg}${content}{red-fg}`;
@@ -150,11 +150,21 @@ async function main() {
 
   input.key("enter", async () => {
     const val = input.value.trim();
+
+    const userIntent = parseUserMessage(val);
+
+    let chatAction;
+    if (userIntent.intent === "edit") {
+      chatAction = chat.edit(userIntent.index, userIntent.message);
+    } else {
+      chatAction = chat.chat(val);
+    }
+
     input.setValue("");
     input.hide();
     loading.load();
-    chat
-      .chat(val)
+
+    chatAction
       .then(render)
       .then(chat.sendMessage)
       .finally(() => {
@@ -189,35 +199,26 @@ async function main() {
     render();
     input.focus();
   }
-
-  // let userMessage = await term.prompt(args.message);
-  // chat.startNewChat(userMessage);
-
-  // while (true) {
-  // term.printConversation(chat.getConversation(), args.usage);
-  // await chat.ask();
-  // term.printConversation(chat.getConversation(), args.usage);
-  // userMessage = await term.prompt();
-
-  // const userIntent = parseUserMessage(userMessage);
-  // if (userIntent.intent === "edit") {
-  // chat.editMessage(userIntent.index, userIntent.message);
-  // } else {
-  // chat.continueChat(userIntent.message);
-  // }
-  // }
 }
 
 main();
 
-function buildUserContent(content) {
-  return `{right}{#00ff7f-fg}You{/#00ff7f-fg}:
+function buildUserContent(content, idx) {
+  return `{right}{gray-fg}Type "\/e${idx} [new message]" to edit this message{/gray-fg}
+{#00ff7f-fg}You{/#00ff7f-fg}:
 {white-fg}${content.trim()}{/white-fg}{/right}`;
 }
 
-function buildAssistantContent(content) {
-  return `{#00bfff-fg}Assistant{/#00ff7f-fg}:
-${marked(content.trim())}`;
+function buildAssistantContent(content, usage) {
+  const usageInfo = usage
+    ? `{gray-fg}(Prompt tokens: ${usage.prompt_tokens}, Completion tokens: ${usage.completion_tokens}, Total tokens: ${usage.total_tokens}){/gray-fg}
+`
+    : "";
+  return (
+    usageInfo +
+    `{#00bfff-fg}Assistant{/#00ff7f-fg}:
+${marked(content.trim())}`
+  );
 }
 
 function exit(screen) {
