@@ -7,6 +7,9 @@ dependencies:
   ansi-escapes:
     specifier: ^6.2.0
     version: 6.2.0
+  blessed:
+    specifier: ^0.1.81
+    version: 0.1.81
   chalk:
     specifier: ^5.2.0
     version: 5.2.0
@@ -234,6 +237,12 @@ packages:
       buffer: 6.0.3
       inherits: 2.0.4
       readable-stream: 3.6.2
+    dev: false
+
+  /blessed@0.1.81:
+    resolution: {integrity: sha512-LoF5gae+hlmfORcG1M5+5XZi4LBmvlXTzwJWzUlPryN/SJdSflZvROM2TwkT0GMpq7oqT48NRd4GS7BiVBc5OQ==}
+    engines: {node: '>= 0.8.0'}
+    hasBin: true
     dev: false
 
   /blueimp-md5@2.19.0:
