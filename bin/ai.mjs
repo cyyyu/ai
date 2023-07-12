@@ -68,37 +68,35 @@ async function main() {
     top: 0,
     left: 0,
     width: "100%",
-    height: "100%-1",
+    height: "100%-3",
     scrollable: true,
     alwaysScroll: true,
     mouse: true,
     content: args.message || "",
     tags: true,
-    border: {
-      type: "line",
-    },
-    style: {
-      border: {
-        fg: "gray",
-      },
-    },
   });
 
   const inputContainer = blessed.box({
     parent: screen,
     width: "100%",
-    height: 1,
+    height: 3,
     bottom: 0,
     left: 0,
     scrollable: false,
     alwaysScroll: false,
     mouse: false,
+    border: {
+      type: "line",
+      style: {
+        fg: "gray",
+      },
+    },
   });
 
   const loading = blessed.loading({
     parent: screen,
-    bottom: 2,
-    left: 1,
+    bottom: 3,
+    left: 2,
     width: 1,
     height: 1,
     hidden: true,
