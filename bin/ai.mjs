@@ -42,6 +42,12 @@ async function main() {
     const assistantMessage = await chat
       .chat(args.message)
       .then(chat.sendMessage);
+
+    if (chat.error) {
+      log(chat.error);
+      return;
+    }
+
     log(marked(assistantMessage.content).trim());
     if (args.usage) {
       const usage = assistantMessage.usage;
