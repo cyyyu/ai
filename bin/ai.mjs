@@ -9,7 +9,7 @@ import TerminalRenderer from "marked-terminal";
 import { parseUserMessage } from "../lib/parseUserMessage.mjs";
 import blessed from "blessed";
 import clipboard from "clipboardy";
-import { exec } from "node:child_process";
+import { saveToFile } from "../lib/saveToFile.mjs";
 
 marked.setOptions({
   renderer: new TerminalRenderer(),
@@ -88,15 +88,6 @@ async function main() {
     tags: true,
   });
 
-  const message = blessed.message({
-    parent: box,
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    height: 1,
-    scrollable: false,
-  });
-
   const inputContainer = blessed.box({
     parent: screen,
     width: "100%",
@@ -112,6 +103,18 @@ async function main() {
         fg: "gray",
       },
     },
+  });
+
+  const message = blessed.message({
+    parent: screen,
+    atop: 0,
+    aleft: 0,
+    width: "100%",
+    height: 1,
+    scrollable: false,
+    bg: "white",
+    fg: "black",
+    hidden: true,
   });
 
   const loading = blessed.loading({
@@ -149,7 +152,7 @@ async function main() {
 
   function render() {
     if (chat.error) {
-      message.error(chat.error, 0);
+      message.error(chat.error);
     } else {
       const conversation = chat.getConversation();
       box.setContent(
@@ -197,8 +200,8 @@ async function main() {
         [userIntent.index].content.trim();
       chatAction = clipboard.write(textToCopy);
     } else if (userIntent.intent === "save") {
-      chatAction = chat.chat(
-        "save:" + userIntent.intent + userIntent.index + userIntent.message
+      chatAction = saveToFile(chat.getConversation(), chat.chatId).then(
+        (fileName) => message.display(`Saved to ${fileName}!`)
       );
     } else if (userIntent.intent === "load") {
       chatAction = chat.chat(
