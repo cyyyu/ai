@@ -26,6 +26,7 @@
     "ansi-escapes": "^6.2.0",
     "blessed": "^0.1.81",
     "chalk": "^5.2.0",
+    "clipboardy": "^3.0.0",
     "command-line-args": "^5.2.1",
     "marked": "^4.3.0",
     "marked-terminal": "^5.1.1",

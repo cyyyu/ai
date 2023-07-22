@@ -8,6 +8,7 @@ import { marked } from "marked";
 import TerminalRenderer from "marked-terminal";
 import { parseUserMessage } from "../lib/parseUserMessage.mjs";
 import blessed from "blessed";
+import clipboard from "clipboardy";
 import { exec } from "node:child_process";
 
 marked.setOptions({
@@ -190,19 +191,11 @@ async function main() {
     if (userIntent.intent === "edit") {
       chatAction = chat.edit(userIntent.index, userIntent.message);
     } else if (userIntent.intent === "copy") {
-      chatAction = new Promise((resolve) => {
-        // Copy the message to the clipboard
-        const textToCopy = chat
-          .getConversation()
-          [userIntent.index].content.trim();
-        exec(`echo "${textToCopy}" | pbcopy`, (err) => {
-          if (err) {
-            // Todo: handle error
-            return;
-          }
-          resolve();
-        });
-      });
+      // Copy the message to the clipboard
+      const textToCopy = chat
+        .getConversation()
+        [userIntent.index].content.trim();
+      chatAction = clipboard.write(textToCopy);
     } else if (userIntent.intent === "save") {
       chatAction = chat.chat(
         "save:" + userIntent.intent + userIntent.index + userIntent.message
