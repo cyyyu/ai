@@ -8,6 +8,7 @@ import { marked } from "marked";
 import TerminalRenderer from "marked-terminal";
 import { parseUserMessage } from "../lib/parseUserMessage.mjs";
 import blessed from "blessed";
+import { exec } from "node:child_process";
 
 marked.setOptions({
   renderer: new TerminalRenderer(),
@@ -30,7 +31,11 @@ async function main() {
     return;
   }
 
-  const chat = new OpenAIChat(args.prompt, args.interactive);
+  const chat = new OpenAIChat(
+    args.interactive,
+    args.prompt,
+    args.commandPrompt
+  );
 
   /* Non-interactive mode */
   if (!args.interactive) {
@@ -134,7 +139,11 @@ async function main() {
           if (role === "user") {
             return buildUserContent(content, idx).trim();
           } else if (role === "assistant") {
-            return buildAssistantContent(content, args.usage && usage).trim();
+            return buildAssistantContent(
+              content,
+              args.usage && usage,
+              idx
+            ).trim();
           } else {
             // Error
             return `{red-fg}${content}{red-fg}`;
@@ -152,9 +161,32 @@ async function main() {
 
     const userIntent = parseUserMessage(val);
 
-    let chatAction;
+    let chatAction,
+      send = userIntent.intent === "message" || userIntent.intent === "edit";
     if (userIntent.intent === "edit") {
       chatAction = chat.edit(userIntent.index, userIntent.message);
+    } else if (userIntent.intent === "copy") {
+      chatAction = new Promise((resolve) => {
+        // Copy the message to the clipboard
+        const textToCopy = chat
+          .getConversation()
+          [userIntent.index].content.trim();
+        exec(`echo "${textToCopy}" | pbcopy`, (err) => {
+          if (err) {
+            // Todo: handle error
+            return;
+          }
+          resolve();
+        });
+      });
+    } else if (userIntent.intent === "save") {
+      chatAction = chat.chat(
+        "save:" + userIntent.intent + userIntent.index + userIntent.message
+      );
+    } else if (userIntent.intent === "load") {
+      chatAction = chat.chat(
+        "load: " + userIntent.intent + userIntent.index + userIntent.message
+      );
     } else {
       chatAction = chat.chat(val);
     }
@@ -165,7 +197,7 @@ async function main() {
 
     chatAction
       .then(render)
-      .then(chat.sendMessage)
+      .then(() => send && chat.sendMessage())
       .finally(() => {
         render();
         input.show();
@@ -203,19 +235,18 @@ async function main() {
 main();
 
 function buildUserContent(content, idx) {
-  return `{right}{gray-fg}Type "\/e${idx} [new message]" to edit this message{/gray-fg}
-{#00ff7f-fg}You{/#00ff7f-fg}:
+  return `{right}{#00ff7f-fg}You{/#00ff7f-fg}{gray-fg}(#${idx}){/gray-fg}:
 {white-fg}${content.trim()}{/white-fg}{/right}`;
 }
 
-function buildAssistantContent(content, usage) {
+function buildAssistantContent(content, usage, idx) {
   const usageInfo = usage
     ? `{gray-fg}(Prompt tokens: ${usage.prompt_tokens}, Completion tokens: ${usage.completion_tokens}, Total tokens: ${usage.total_tokens}){/gray-fg}
 `
     : "";
   return (
     usageInfo +
-    `{#00bfff-fg}Assistant{/#00ff7f-fg}:
+    `{#00bfff-fg}Assistant{/#00ff7f-fg}{gray-fg}(#${idx}){/gray-fg}:
 ${marked(content.trim())}`
   );
 }
