@@ -87,6 +87,15 @@ async function main() {
     tags: true,
   });
 
+  const message = blessed.message({
+    parent: box,
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: 1,
+    scrollable: false,
+  });
+
   const inputContainer = blessed.box({
     parent: screen,
     width: "100%",
@@ -138,27 +147,31 @@ async function main() {
   });
 
   function render() {
-    const conversation = chat.getConversation();
-    box.setContent(
-      conversation
-        .map(({ role, content, usage }, idx) => {
-          if (role === "user") {
-            return buildUserContent(content, idx).trim();
-          } else if (role === "assistant") {
-            return buildAssistantContent(
-              content,
-              args.usage && usage,
-              idx
-            ).trim();
-          } else {
-            // Error
-            return `{red-fg}${content}{red-fg}`;
-          }
-        })
-        .join("\n")
-    );
-    // Scroll to bottom
-    box.setScrollPerc(100);
+    if (chat.error) {
+      message.error(chat.error, 0);
+    } else {
+      const conversation = chat.getConversation();
+      box.setContent(
+        conversation
+          .map(({ role, content, usage }, idx) => {
+            if (role === "user") {
+              return buildUserContent(content, idx).trim();
+            } else if (role === "assistant") {
+              return buildAssistantContent(
+                content,
+                args.usage && usage,
+                idx
+              ).trim();
+            } else {
+              // Error
+              return `{red-fg}${content}{red-fg}`;
+            }
+          })
+          .join("\n")
+      );
+      // Scroll to bottom
+      box.setScrollPerc(100);
+    }
     screen.render();
   }
 
@@ -168,7 +181,12 @@ async function main() {
     const userIntent = parseUserMessage(val);
 
     let chatAction,
-      send = userIntent.intent === "message" || userIntent.intent === "edit";
+      send =
+        userIntent.intent === "message" ||
+        userIntent.intent === "edit" ||
+        (userIntent.intent === "retry" &&
+          chat.getConversation()[chat.getConversation().length - 1].role ===
+            "user");
     if (userIntent.intent === "edit") {
       chatAction = chat.edit(userIntent.index, userIntent.message);
     } else if (userIntent.intent === "copy") {
@@ -193,6 +211,8 @@ async function main() {
       chatAction = chat.chat(
         "load: " + userIntent.intent + userIntent.index + userIntent.message
       );
+    } else if (userIntent.intent === "retry") {
+      chatAction = Promise.resolve();
     } else {
       chatAction = chat.chat(val);
     }
