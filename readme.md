@@ -2,7 +2,7 @@
 
 A command-line tool for interacting with Azure OpenAI chat completion api.
 
-<img width="842" alt="Example" src="https://github.com/cyyyu/ai/assets/15100664/46db63fc-92f8-4bab-b68e-6f480c264698">
+<img width="842" alt="Example" src="https://github.com/cyyyu/ai/assets/15100664/fa9c6d6c-7e11-4e8d-8ecb-d38841a738ee">
 
 ## 📥 Installation
 
@@ -56,7 +56,7 @@ Here are some examples of how to use the tool:
 
 `ai -i` or with a message `ai -i "Why is the ocean blue?"`
 
-<img width="842" alt="ai -i 'Why is the ocean blue?'" src="https://github.com/cyyyu/ai/assets/15100664/28fdf657-d7de-4e06-a6f1-24766564b110">
+<img width="842" alt="ai -i 'Why is the ocean blue?'" src="https://github.com/cyyyu/ai/assets/15100664/8f986b73-6e8a-4577-80ff-a6dd8698ae32">
 
 ### Use a different prompt
 
