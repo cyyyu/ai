@@ -18,6 +18,7 @@ Once you have a resource and a model deployed, retrieve the ENDPOINT and API_KEY
 export OPENAI_API_KEY=<your api key>
 export OPENAI_API_BASE=<your endpoint>
 export OPENAI_API_MODEL_NAME=<your model name>
+export AZURE_API_VERSION=<api version> // optional defaults to 2023-12-01-preview
 ```
 
 Then you can use the tool to interact with the AI assistant.
