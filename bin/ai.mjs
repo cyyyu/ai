@@ -34,8 +34,8 @@ async function main() {
 
   const chat = new OpenAIChat(
     args.interactive,
-    args.prompt,
-    args.commandPrompt
+    args.rolePrompt,
+    args.commandPrompt,
   );
 
   /* Non-interactive mode */
@@ -58,8 +58,8 @@ async function main() {
             usage.prompt_tokens
           }\n${chalk.underline("Completion tokens")}: ${
             usage.completion_tokens
-          }\n${chalk.underline("Total tokens")}: ${usage.total_tokens}`
-        )
+          }\n${chalk.underline("Total tokens")}: ${usage.total_tokens}`,
+        ),
       );
     }
     return;
@@ -164,14 +164,14 @@ async function main() {
               return buildAssistantContent(
                 content,
                 args.usage && usage,
-                idx
+                idx,
               ).trim();
             } else {
               // Error
               return `{red-fg}${content}{red-fg}`;
             }
           })
-          .join("\n")
+          .join("\n"),
       );
       // Scroll to bottom
       box.setScrollPerc(100);
@@ -201,11 +201,11 @@ async function main() {
       chatAction = clipboard.write(textToCopy);
     } else if (userIntent.intent === "save") {
       chatAction = saveToFile(chat.getConversation(), chat.chatId).then(
-        (fileName) => message.display(`Saved to ${fileName}!`)
+        (fileName) => message.display(`Saved to ${fileName}!`),
       );
     } else if (userIntent.intent === "load") {
       chatAction = chat.chat(
-        "load: " + userIntent.intent + userIntent.index + userIntent.message
+        "load: " + userIntent.intent + userIntent.index + userIntent.message,
       );
     } else if (userIntent.intent === "retry") {
       chatAction = Promise.resolve();
