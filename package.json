@@ -1,6 +1,6 @@
 {
   "name": "@cyyyu/ai",
-  "version": "1.3.7",
+  "version": "2.0.0",
   "description": "A command line program designed to interact with Azure OpenAI API.",
   "packageManager": "pnpm@9.15.0",
   "main": "index.js",
