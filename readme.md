@@ -1,6 +1,6 @@
 # 🤖 AI
 
-A command-line tool for interacting with Azure OpenAI chat completion api.
+A command-line tool for chat completions using the OpenAI API or Azure OpenAI.
 
 <img width="842" alt="Example" src="https://github.com/cyyyu/ai/assets/15100664/fa9c6d6c-7e11-4e8d-8ecb-d38841a738ee">
 
@@ -10,18 +10,26 @@ A command-line tool for interacting with Azure OpenAI chat completion api.
 
 ## 🚀 Usage
 
-Create a resource and deploy a model using Azure OpenAI if you haven't done so already. You can follow [this doc](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource?pivots=web-portal).
+Configure your API key and model (or deployment) name. Use **OpenAI** (api.openai.com) by default, or **Azure OpenAI** by setting a custom endpoint.
 
-Once you have a resource and a model deployed, retrieve the ENDPOINT and API_KEY from Azure portal. Follow [this instruction](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=bash&pivots=rest-api#retrieve-key-and-endpoint).
+**OpenAI (default):**  
+Use an [API key](https://platform.openai.com/api-keys) from your OpenAI account.
 
 ```bash
-export AZURE_API_BASE="https://<your-resource>.cognitiveservices.azure.com/"
-export AZURE_OPENAI_API_KEY="<your api key>"
-export AZURE_OPENAI_DEPLOYMENT="<your deployment name>"
-export AZURE_API_VERSION="2025-01-01-preview"  # optional, defaults to 2025-01-01-preview
+export OPENAI_API_KEY="sk-..."
+export OPENAI_DEPLOYMENT="gpt-4"   # or gpt-3.5-turbo, etc.
 ```
 
-Then you can use the tool to interact with the AI assistant.
+**Azure OpenAI:**  
+Get your endpoint and key from the [Azure portal](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=bash&pivots=rest-api#retrieve-key-and-endpoint); create a resource and deployment via [Azure OpenAI](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource?pivots=web-portal) if needed.
+
+```bash
+export OPENAI_ENDPOINT="https://<your-resource>.openai.azure.com/openai/v1/"
+export OPENAI_API_KEY="<your api key>"
+export OPENAI_DEPLOYMENT="<your deployment name>"
+```
+
+Then run the tool:
 
 ```bash
 $ ai [options] [message]
@@ -87,7 +95,7 @@ alias ai-english-translator="ai -p 'I want you to act as an English translator, 
 
 ![demo5](https://user-images.githubusercontent.com/15100664/234441399-6ee81496-7e77-4745-9d60-7b81e5199977.png)
 
-### Explorer more wonderful prompts
+### Explore more wonderful prompts
 
 - [https://github.com/f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts)
 - [https://github.com/PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)(中文)

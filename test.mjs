@@ -3,10 +3,9 @@ import process from "node:process";
 import { OpenAIChat } from "./lib/OpenAIChat.mjs";
 
 test.beforeEach((t) => {
-  process.env.AZURE_API_BASE = "https://example.cognitiveservices.azure.com/";
-  process.env.AZURE_OPENAI_API_KEY = "test-key";
-  process.env.AZURE_OPENAI_DEPLOYMENT = "gpt-4";
-  process.env.AZURE_API_VERSION = "2025-01-01-preview";
+  process.env.OPENAI_ENDPOINT = "https://example.openai.azure.com/openai/v1/";
+  process.env.OPENAI_API_KEY = "test-key";
+  process.env.OPENAI_DEPLOYMENT = "gpt-4";
 });
 
 test("client and model are set correctly", (t) => {
