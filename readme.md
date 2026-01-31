@@ -6,7 +6,7 @@ A command-line tool for interacting with Azure OpenAI chat completion api.
 
 ## 📥 Installation
 
-`$ npm install -g @cyyyu/ai`
+`$ npm install -g @cyyyu/ai` or `$ yarn global add @cyyyu/ai` or `$ pnpm add -g @cyyyu/ai`
 
 ## 🚀 Usage
 
@@ -15,10 +15,10 @@ Create a resource and deploy a model using Azure OpenAI if you haven't done so a
 Once you have a resource and a model deployed, retrieve the ENDPOINT and API_KEY from Azure portal. Follow [this instruction](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=bash&pivots=rest-api#retrieve-key-and-endpoint).
 
 ```bash
-export OPENAI_API_KEY=<your api key>
-export OPENAI_API_BASE=<your endpoint>
-export OPENAI_API_MODEL_NAME=<your model name>
-export AZURE_API_VERSION=<api version> // optional defaults to 2024-02-01
+export AZURE_API_BASE="https://<your-resource>.cognitiveservices.azure.com/"
+export AZURE_OPENAI_API_KEY="<your api key>"
+export AZURE_OPENAI_DEPLOYMENT="<your deployment name>"
+export AZURE_API_VERSION="2025-01-01-preview"  # optional, defaults to 2025-01-01-preview
 ```
 
 Then you can use the tool to interact with the AI assistant.
@@ -89,8 +89,8 @@ alias ai-english-translator="ai -p 'I want you to act as an English translator, 
 
 ### Explorer more wonderful prompts
 
-* [https://github.com/f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts)
-* [https://github.com/PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)(中文)
+- [https://github.com/f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts)
+- [https://github.com/PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)(中文)
 
 ## 📝 License
 

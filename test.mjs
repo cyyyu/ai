@@ -3,18 +3,16 @@ import process from "node:process";
 import { OpenAIChat } from "./lib/OpenAIChat.mjs";
 
 test.beforeEach((t) => {
-  process.env.OPENAI_API_BASE = "1";
-  process.env.OPENAI_API_KEY = "2";
-  process.env.OPENAI_API_MODEL_NAME = "3";
+  process.env.AZURE_API_BASE = "https://example.cognitiveservices.azure.com/";
+  process.env.AZURE_OPENAI_API_KEY = "test-key";
+  process.env.AZURE_OPENAI_DEPLOYMENT = "gpt-4";
+  process.env.AZURE_API_VERSION = "2025-01-01-preview";
 });
 
-test("api key and url are set correctly", (t) => {
+test("client and model are set correctly", (t) => {
   const chat = new OpenAIChat();
-  t.is(chat._apiKey, "2");
-  t.is(
-    chat._url,
-    `1/openai/deployments/3/chat/completions?api-version=2023-03-15-preview`
-  );
+  t.truthy(chat._client);
+  t.is(chat._model, "gpt-4");
 });
 
 test("initial prompt is set correctly", (t) => {
